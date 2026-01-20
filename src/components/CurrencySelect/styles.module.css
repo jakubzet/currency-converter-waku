@@ -12,6 +12,10 @@
   color: var(--color-secondary);
   text-align: center;
 
+  option {
+    color: initial;
+  }
+
   &:focus-within,
   &:hover {
     border: var(--border-secondary);
