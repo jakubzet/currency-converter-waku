@@ -27,7 +27,6 @@ body {
   flex-direction: column;
   justify-content: center;
   background: var(--color-tertiary);
-  padding: var(--space-4);
   min-height: 100vh;
   color: var(--color-secondary);
   font-size: var(--font-space-default);

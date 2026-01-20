@@ -1,3 +1,4 @@
+import { currencyConvertAction } from "../actions/currencyConvertAction";
 import { Converter } from "../components/Converter";
 import { APP_TITLE } from "../constants/title";
 import { createClient } from "../lib/currencyClient";
@@ -9,7 +10,10 @@ export default async function HomePage() {
     <div>
       <title>{APP_TITLE}</title>
 
-      <Converter currencies={data.currencies} />
+      <Converter
+        currencies={data.currencies}
+        formAction={currencyConvertAction}
+      />
     </div>
   );
 }

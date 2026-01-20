@@ -1,23 +1,25 @@
-import { type PropsWithChildren, useId } from "react";
+import { type ComponentProps, type ReactNode, useId } from "react";
 
 import * as css from "./styles.module.css";
 
-type Props = PropsWithChildren & {
+type Props = {
+  children: ReactNode;
   label: string;
-  displayOnly?: boolean;
-};
+} & ComponentProps<"input">;
 
 export const CurrencyField = ({
   children,
   label,
-  displayOnly = false,
+  defaultValue = "",
+  readOnly = false,
+  ...restProps
 }: Props) => {
   const id = useId();
 
   return (
-    <div
+    <section
       className={css.field}
-      data-display-only={displayOnly ? "true" : "false"}
+      data-display-only={readOnly ? "true" : "false"}
     >
       <label htmlFor={id} className={css.label}>
         {label}
@@ -27,13 +29,14 @@ export const CurrencyField = ({
         <input
           id={id}
           type="text"
+          defaultValue={defaultValue}
           placeholder="How much?"
-          disabled={displayOnly}
-          readOnly={displayOnly}
+          readOnly={readOnly}
+          {...restProps}
         />
 
         {children}
       </div>
-    </div>
+    </section>
   );
 };

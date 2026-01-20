@@ -29,7 +29,7 @@ export function createClient() {
       params.append("api_key", API_KEY);
       params.append("from", conversionParams.from);
       params.append("to", conversionParams.to);
-      params.append("from", conversionParams.from);
+      params.append("amount", conversionParams.amount.toString());
 
       const response = await fetch(`${API_BASE_URL}/convert?${params}`);
       const data = await response.json();

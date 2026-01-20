@@ -8,6 +8,7 @@
   border-radius: var(--radius-default);
   background: none;
   padding: var(--space-2) var(--space-4);
+  max-width: 100%;
   color: var(--color-secondary);
   text-align: center;
 
