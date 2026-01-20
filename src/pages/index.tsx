@@ -1,32 +1,29 @@
-import { Link } from "waku";
-
-import { Counter } from "../components/counter";
-import css from "../styles.module.css";
+import { Converter } from "../components/Converter";
+import { APP_TITLE } from "../constants/title";
+import { createClient } from "../lib/currencyClient";
 
 export default async function HomePage() {
   const data = await getData();
 
   return (
-    <div className={css.foo}>
-      <title>{data.title}</title>
-      <h1 className="text-4xl font-bold tracking-tight">{data.headline}</h1>
-      <p>{data.body}</p>
-      <Counter />
-      <Link to="/about" className="mt-4 inline-block underline">
-        About page
-      </Link>
+    <div>
+      <title>{APP_TITLE}</title>
+
+      <Converter currencies={data.currencies} />
     </div>
   );
 }
 
 const getData = async () => {
-  const data = {
-    title: "Waku",
-    headline: "Waku",
-    body: "Hello world!",
-  };
+  const currencyClient = createClient();
+  const { response } = await currencyClient.getCurrencies();
 
-  return data;
+  return {
+    currencies: response.map((currency) => ({
+      code: currency.short_code,
+      name: currency.name,
+    })),
+  };
 };
 
 export const getConfig = async () => {

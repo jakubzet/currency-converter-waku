@@ -5,5 +5,5 @@
     "source.fixAll.eslint": "always",
     "source.fixAll.prettier": "always"
   },
-  "eslint.validate": ["typescript"]
+  "eslint.validate": ["typescript", "typescriptreact"]
 }

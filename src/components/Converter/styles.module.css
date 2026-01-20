@@ -1,0 +1,8 @@
+.converter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin: 0 auto;
+  padding: var(--space-4);
+  max-width: var(--size-app-width);
+}

@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--color-secondary);
+  font-weight: bolder;
+  line-height: var(--line-height-md);
+  text-transform: uppercase;
+}
+
+.headline {
+  font-size: 1.5em;
+  letter-spacing: var(--space-1);
+}

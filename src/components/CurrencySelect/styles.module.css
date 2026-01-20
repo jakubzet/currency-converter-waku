@@ -1,0 +1,19 @@
+.select {
+  appearance: none;
+  transition: var(--transition-default);
+  outline: none;
+  border: none;
+  border: solid 1px red;
+  border: var(--border-primary);
+  border-radius: var(--radius-default);
+  background: none;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-secondary);
+  text-align: center;
+
+  &:focus-within,
+  &:hover {
+    border: var(--border-secondary);
+    color: var(--color-secondary);
+  }
+}

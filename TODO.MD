@@ -18,9 +18,9 @@ Your task is to create a simple currency conversion tool similar to that which c
 
 ### Currency Conversion:
 
-1. Allow users to input an amount for the “from” currency.
+1. Allow users to input an amount for the "from” currency.
 1. Fetch converted value from https://api.currencybeacon.com/v1/convert API.
-1. Populate the “to” value based on the value returned from API.
+1. Populate the "to” value based on the value returned from API.
 
 ## API Overview:
 

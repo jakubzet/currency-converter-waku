@@ -11,7 +11,10 @@ const config = {
   importOrder: ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
-  plugins: ["@trivago/prettier-plugin-sort-imports"],
+  plugins: [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-css-order",
+  ],
 };
 
 export default config;
