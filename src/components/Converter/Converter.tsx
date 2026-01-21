@@ -1,6 +1,7 @@
 "use client";
 
 import { type ComponentProps, useActionState, useRef } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 import type { CurrencyConvertAction } from "../../actions/currencyConvertAction";
 import {
@@ -12,7 +13,10 @@ import { SYMBOL_FROM, SYMBOL_TO, VALUE_FROM } from "../../constants/names";
 import { CurrencyField } from "../CurrencyField";
 import { CurrencySelect } from "../CurrencySelect";
 import { ErrorBox } from "../ErrorBox";
-import { OUTPUT_VALUE_DECIMAL_PLACES } from "./constants";
+import {
+  INPUT_UPDATE_DEBOUNCE_TIME_MS,
+  OUTPUT_VALUE_DECIMAL_PLACES,
+} from "./constants";
 import * as css from "./styles.module.css";
 
 type Props = {
@@ -29,17 +33,27 @@ export const Converter = ({ currencies, formAction }: Props) => {
     error: "",
   });
 
-  const outputLabel = "Output" + (isPending ? "..." : "");
   const formRef = useRef<HTMLFormElement>(null);
   const fieldValueFrom = state.amount ? state.amount : "";
-
   const fieldValueTo = state.value
     ? state.value.toFixed(OUTPUT_VALUE_DECIMAL_PLACES)
     : "";
 
-  const handleFormSubmit = () => {
-    formRef.current?.requestSubmit();
-  };
+  const outputLabel = "Output" + (isPending ? " (loading...)" : "");
+
+  const handleFormSubmit = () => formRef.current?.requestSubmit();
+
+  const handleFormSubmitDebounced = useDebouncedCallback(
+    () => {
+      handleFormSubmit();
+    },
+    INPUT_UPDATE_DEBOUNCE_TIME_MS,
+    {
+      debounceOnServer: true,
+      leading: false,
+      trailing: true,
+    },
+  );
 
   return (
     <form ref={formRef} action={action}>
@@ -53,7 +67,7 @@ export const Converter = ({ currencies, formAction }: Props) => {
               Number(fieldValueFrom) === Number(ev.currentTarget.value);
 
             if (!hasSameNumericValue) {
-              handleFormSubmit();
+              handleFormSubmitDebounced();
             }
           }}
         >
@@ -74,7 +88,13 @@ export const Converter = ({ currencies, formAction }: Props) => {
           />
         </CurrencyField>
 
-        <ErrorBox message={state.error} />
+        <ErrorBox
+          message={
+            state.error ||
+            "When input value is changed several times in short time, only the most recent value will be used (through debounce functionality)."
+          }
+          hasError={!!state.error}
+        />
       </div>
 
       {/* NOTE: Just to be able to submit without JS! */}

@@ -1,6 +1,10 @@
 .box {
-  border: var(--border-tertiary);
+  border: var(--border-secondary);
   border-radius: var(--radius-default);
   padding: var(--space-4);
-  color: var(--color-error);
+
+  &[data-error="true"] {
+    border: var(--border-tertiary);
+    color: var(--color-error);
+  }
 }

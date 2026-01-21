@@ -1,11 +1,9 @@
-import { API_BASE_URL } from "./constants";
+import { API_BASE_URL, API_KEY } from "./constants";
 import type {
   ConvertCurrenciesResponse,
   ConvertRequestParams,
   GetCurrenciesResponse,
 } from "./types";
-
-const API_KEY = process.env.API_KEY_CURRENCY_BEACON;
 
 // NOTE: Based on info from https://currencybeacon.com/api-documentation, sadly no OpenAPI schema is exposed :(
 export function createClient() {

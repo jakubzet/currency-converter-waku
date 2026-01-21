@@ -3,16 +3,17 @@ import type { ComponentProps } from "react";
 import * as css from "./styles.module.css";
 
 type Props = {
-  message?: string;
+  message: string;
+  hasError?: boolean;
 };
 
-export const ErrorBox = ({ message }: Props) => {
-  if (!message?.length) {
-    return null;
-  }
-
+export const ErrorBox = ({ message, hasError = false }: Props) => {
   return (
-    <section role="alert" className={css.box}>
+    <section
+      role="alert"
+      className={css.box}
+      data-error={hasError ? "true" : "false"}
+    >
       {message}
     </section>
   );
