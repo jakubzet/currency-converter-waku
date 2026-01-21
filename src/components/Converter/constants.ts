@@ -1,0 +1,1 @@
+export const OUTPUT_VALUE_DECIMAL_PLACES = 2;

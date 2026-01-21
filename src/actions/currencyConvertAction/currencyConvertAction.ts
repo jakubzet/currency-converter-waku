@@ -7,7 +7,7 @@ const currencyClient = createClient();
 
 export type CurrencyConvertAction = typeof currencyConvertAction;
 
-const defaultActionState = {
+const INITIAL_ACTION_STATE = {
   amount: 0,
   value: 0,
   from: "",
@@ -16,26 +16,25 @@ const defaultActionState = {
 };
 
 export const currencyConvertAction = async (
-  prevState: typeof defaultActionState,
+  prevState: typeof INITIAL_ACTION_STATE,
   formData: FormData,
 ) => {
-  const actionState = { ...defaultActionState };
+  const params = { ...INITIAL_ACTION_STATE };
 
   if (formData.get(VALUE_FROM)) {
-    actionState.amount = Number(formData.get(VALUE_FROM));
+    params.amount = Number(formData.get(VALUE_FROM));
   }
 
   if (formData.get(SYMBOL_FROM)) {
-    actionState.from = formData.get(SYMBOL_FROM)?.toString() ?? "";
+    params.from = formData.get(SYMBOL_FROM)?.toString() ?? "";
   }
 
   if (formData.get(SYMBOL_TO)) {
-    actionState.to = formData.get(SYMBOL_TO)?.toString() ?? "";
+    params.to = formData.get(SYMBOL_TO)?.toString() ?? "";
   }
 
   try {
-    const { response, meta } =
-      await currencyClient.convertCurrencies(actionState);
+    const { response, meta } = await currencyClient.convertCurrencies(params);
 
     if (meta.code === 200) {
       return { ...response, error: "" };

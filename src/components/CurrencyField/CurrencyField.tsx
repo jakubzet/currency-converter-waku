@@ -1,11 +1,15 @@
 import { type ComponentProps, type ReactNode, useId } from "react";
+import { IMaskInput } from "react-imask";
 
 import * as css from "./styles.module.css";
 
 type Props = {
   children: ReactNode;
   label: string;
-} & ComponentProps<"input">;
+} & Pick<
+  ComponentProps<"input">,
+  "name" | "defaultValue" | "readOnly" | "onChange"
+>;
 
 export const CurrencyField = ({
   children,
@@ -26,13 +30,20 @@ export const CurrencyField = ({
       </label>
 
       <div className={css.content}>
-        <input
+        <IMaskInput
           id={id}
           type="text"
           defaultValue={defaultValue}
           placeholder="How much?"
           readOnly={readOnly}
           autoComplete="off"
+          mask={Number}
+          lazy={false}
+          scale={2}
+          thousandsSeparator=""
+          radix="."
+          mapToRadix={["."]}
+          min={0}
           {...restProps}
         />
 
