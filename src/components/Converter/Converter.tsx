@@ -11,6 +11,7 @@ import {
 import { SYMBOL_FROM, SYMBOL_TO, VALUE_FROM } from "../../constants/names";
 import { CurrencyField } from "../CurrencyField";
 import { CurrencySelect } from "../CurrencySelect";
+import { ErrorBox } from "../ErrorBox";
 import * as css from "./styles.module.css";
 
 type Props = {
@@ -19,22 +20,17 @@ type Props = {
 };
 
 export const Converter = ({ currencies, formAction }: Props) => {
-  const [actionState, action, isPending] = useActionState(formAction, {
+  const [state, action, isPending] = useActionState(formAction, {
     amount: DEFAULT_VALUE,
     from: DEFAULT_SYMBOL_FROM,
     to: DEFAULT_SYMBOL_TO,
     value: DEFAULT_VALUE,
+    error: "",
   });
 
   const formRef = useRef<HTMLFormElement>(null);
-
-  const fromFieldValue = actionState.amount
-    ? actionState.amount.toString()
-    : "";
-
-  const targetFieldValue = actionState.value
-    ? actionState.value.toFixed(2)
-    : "";
+  const fieldValueFrom = state.amount ? state.amount.toString() : "";
+  const fieldValueTo = state.value ? state.value.toFixed(2) : "";
 
   const handleFormControlUpdate = () => {
     formRef.current?.requestSubmit();
@@ -47,27 +43,30 @@ export const Converter = ({ currencies, formAction }: Props) => {
           label="Input"
           readOnly={isPending}
           name={VALUE_FROM}
-          defaultValue={fromFieldValue}
+          defaultValue={fieldValueFrom}
           onChange={handleFormControlUpdate}
         >
           <CurrencySelect
             name={SYMBOL_FROM}
             currencies={currencies}
-            defaultValue={actionState.from}
+            defaultValue={state.from}
             onChange={handleFormControlUpdate}
           />
         </CurrencyField>
 
-        <CurrencyField label="Output" readOnly defaultValue={targetFieldValue}>
+        <CurrencyField label="Output" readOnly defaultValue={fieldValueTo}>
           <CurrencySelect
             name={SYMBOL_TO}
             currencies={currencies}
-            defaultValue={actionState.to}
+            defaultValue={state.to}
             onChange={handleFormControlUpdate}
           />
         </CurrencyField>
+
+        <ErrorBox message={state.error} />
       </div>
 
+      {/* NOTE: Just to be able to submit without JS! */}
       <button type="submit" hidden>
         Submit
       </button>

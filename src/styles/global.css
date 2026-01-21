@@ -2,7 +2,8 @@
   --color-primary: #0f4024;
   --color-secondary: #ffbc00;
   --color-tertiary: #0c0c0c;
-  --font-space-default: 16px;
+  --color-error: #a30000;
+  --font-size-default: 16px;
   --space-0: 0px;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -20,6 +21,7 @@
   --radius-default: 4px;
   --border-primary: solid 2px var(--color-primary);
   --border-secondary: solid 2px var(--color-secondary);
+  --border-tertiary: solid 2px var(--color-error);
 }
 
 body {
@@ -29,7 +31,7 @@ body {
   background: var(--color-tertiary);
   min-height: 100vh;
   color: var(--color-secondary);
-  font-size: var(--font-space-default);
+  font-size: var(--font-size-default);
   line-height: var(--line-height-md);
   font-family: var(--font-primary);
 }

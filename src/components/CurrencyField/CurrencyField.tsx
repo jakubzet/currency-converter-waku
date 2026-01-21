@@ -32,6 +32,7 @@ export const CurrencyField = ({
           defaultValue={defaultValue}
           placeholder="How much?"
           readOnly={readOnly}
+          autoComplete="off"
           {...restProps}
         />
 

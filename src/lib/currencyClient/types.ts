@@ -1,6 +1,12 @@
 type ResponseMetaField = {
-  code: number;
+  code: 200;
   disclaimer: string;
+};
+
+type ErrorMetaField = {
+  code: 401 | 403 | 404 | 429 | 500;
+  error_type: string;
+  error_detail: string;
 };
 
 type CurrencyResponseField = {
@@ -26,12 +32,12 @@ type ConversionResponseField = {
 };
 
 export type GetCurrenciesResponse = {
-  meta: ResponseMetaField;
+  meta: ResponseMetaField | ErrorMetaField;
   response: CurrencyResponseField[];
 };
 
 export type ConvertCurrenciesResponse = {
-  meta: ResponseMetaField;
+  meta: ResponseMetaField | ErrorMetaField;
   response: ConversionResponseField;
 };
 

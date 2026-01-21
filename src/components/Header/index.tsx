@@ -7,8 +7,8 @@ export const Header = () => {
       <img src="/images/logo.svg" width="64px" height="64px" />
 
       <span role="heading" aria-level={1} className={css.logo}>
-        <span>{appTitle.PREFIX}</span>
-        <span className={css.headline}>{appTitle.SUFFIX}</span>
+        <span>{appTitle.APP_TITLE_PREFIX}</span>
+        <span className={css.headline}>{appTitle.APP_TITLE_SUFFIX}</span>
       </span>
     </header>
   );
