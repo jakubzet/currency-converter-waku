@@ -1,3 +1,4 @@
+// NOTE: All types prepared basing on documentation of Currency Beacon API
 type ResponseMetaField = {
   code: 200;
   disclaimer: string;

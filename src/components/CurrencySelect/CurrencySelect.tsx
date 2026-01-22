@@ -10,6 +10,7 @@ type Props = {
   }[];
 } & ComponentProps<"select">;
 
+/** Dropdown with list of currencies to be used with form component */
 export const CurrencySelect = ({
   name,
   defaultValue,

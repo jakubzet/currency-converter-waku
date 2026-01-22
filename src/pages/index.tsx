@@ -1,6 +1,6 @@
 import { currencyConvertAction } from "../actions/currencyConvertAction";
 import { Converter } from "../components/Converter";
-import { APP_TITLE } from "../constants/title";
+import { APP_TITLE } from "../constants/app";
 import { createClient } from "../lib/currencyClient";
 
 export default async function HomePage() {

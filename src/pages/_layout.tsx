@@ -9,9 +9,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   return (
     <div>
       <link rel="icon" type="image/png" href={data.icon} />
-
       <Header />
-
       <main>{children}</main>
     </div>
   );

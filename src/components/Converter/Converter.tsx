@@ -1,18 +1,21 @@
 "use client";
 
-import { type ComponentProps, useActionState, useRef } from "react";
+import {
+  ChangeEvent,
+  type ComponentProps,
+  useActionState,
+  useRef,
+} from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-import type { CurrencyConvertAction } from "../../actions/currencyConvertAction";
 import {
-  DEFAULT_SYMBOL_FROM,
-  DEFAULT_SYMBOL_TO,
-  DEFAULT_VALUE,
-} from "../../constants/defaults";
-import { SYMBOL_FROM, SYMBOL_TO, VALUE_FROM } from "../../constants/names";
+  CURRENCY_CONVERT_ACTION_INITIAL_STATE,
+  type CurrencyConvertAction,
+} from "../../actions/currencyConvertAction";
+import * as FORM_NAME from "../../constants/formNames";
 import { CurrencyField } from "../CurrencyField";
 import { CurrencySelect } from "../CurrencySelect";
-import { ErrorBox } from "../ErrorBox";
+import { InfoBox } from "../InfoBox";
 import {
   INPUT_UPDATE_DEBOUNCE_TIME_MS,
   OUTPUT_VALUE_DECIMAL_PLACES,
@@ -24,16 +27,15 @@ type Props = {
   formAction: CurrencyConvertAction;
 };
 
+/** Main application component, allows to convert currencies */
 export const Converter = ({ currencies, formAction }: Props) => {
-  const [state, action, isPending] = useActionState(formAction, {
-    amount: DEFAULT_VALUE,
-    from: DEFAULT_SYMBOL_FROM,
-    to: DEFAULT_SYMBOL_TO,
-    value: DEFAULT_VALUE,
-    error: "",
-  });
-
   const formRef = useRef<HTMLFormElement>(null);
+
+  const [state, action, isPending] = useActionState(
+    formAction,
+    CURRENCY_CONVERT_ACTION_INITIAL_STATE,
+  );
+
   const fieldValueFrom = state.amount ? state.amount : "";
   const fieldValueTo = state.value
     ? state.value.toFixed(OUTPUT_VALUE_DECIMAL_PLACES)
@@ -55,24 +57,26 @@ export const Converter = ({ currencies, formAction }: Props) => {
     },
   );
 
+  const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    const hasSameNumericValue =
+      Number(fieldValueFrom) === Number(ev.currentTarget.value);
+
+    if (!hasSameNumericValue) {
+      handleFormSubmitDebounced();
+    }
+  };
+
   return (
     <form ref={formRef} action={action}>
       <div className={css.converter}>
         <CurrencyField
           label="Input"
-          name={VALUE_FROM}
+          name={FORM_NAME.CURRENCY_VALUE_FROM}
           defaultValue={fieldValueFrom}
-          onChange={(ev) => {
-            const hasSameNumericValue =
-              Number(fieldValueFrom) === Number(ev.currentTarget.value);
-
-            if (!hasSameNumericValue) {
-              handleFormSubmitDebounced();
-            }
-          }}
+          onChange={handleInputChange}
         >
           <CurrencySelect
-            name={SYMBOL_FROM}
+            name={FORM_NAME.CURRENCY_SYMBOL_FROM}
             currencies={currencies}
             defaultValue={state.from}
             onChange={handleFormSubmit}
@@ -81,14 +85,14 @@ export const Converter = ({ currencies, formAction }: Props) => {
 
         <CurrencyField label={outputLabel} readOnly defaultValue={fieldValueTo}>
           <CurrencySelect
-            name={SYMBOL_TO}
+            name={FORM_NAME.CURRENCY_SYMBOL_TO}
             currencies={currencies}
             defaultValue={state.to}
             onChange={handleFormSubmit}
           />
         </CurrencyField>
 
-        <ErrorBox
+        <InfoBox
           message={
             state.error ||
             "When input value is changed several times in short time, only the most recent value will be used (through debounce functionality)."

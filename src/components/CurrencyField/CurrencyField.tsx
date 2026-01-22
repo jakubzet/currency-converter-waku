@@ -8,9 +8,10 @@ type Props = {
   label: string;
 } & Pick<
   ComponentProps<"input">,
-  "name" | "defaultValue" | "readOnly" | "onChange"
+  "name" | "defaultValue" | "readOnly" | "onChange" | "children"
 >;
 
+/** Component including form field suitable for manipulating currency value */
 export const CurrencyField = ({
   children,
   label,

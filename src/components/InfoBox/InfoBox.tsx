@@ -1,5 +1,3 @@
-import type { ComponentProps } from "react";
-
 import * as css from "./styles.module.css";
 
 type Props = {
@@ -7,7 +5,8 @@ type Props = {
   hasError?: boolean;
 };
 
-export const ErrorBox = ({ message, hasError = false }: Props) => {
+/** Just a small container to display some information for the user in a friendly way */
+export const InfoBox = ({ message, hasError = false }: Props) => {
   return (
     <section
       role="alert"

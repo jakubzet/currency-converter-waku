@@ -1,36 +1,31 @@
 "use server";
 
-import { SYMBOL_FROM, SYMBOL_TO, VALUE_FROM } from "../../constants/names";
+import * as FORM_NAME from "../../constants/formNames";
 import { createClient } from "../../lib/currencyClient";
+import { INITIAL_STATE } from "./constants";
 
 const currencyClient = createClient();
 
 export type CurrencyConvertAction = typeof currencyConvertAction;
 
-const INITIAL_ACTION_STATE = {
-  amount: 0,
-  value: 0,
-  from: "",
-  to: "",
-  error: "",
-};
-
 export const currencyConvertAction = async (
-  prevState: typeof INITIAL_ACTION_STATE,
+  prevState: typeof INITIAL_STATE,
   formData: FormData,
 ) => {
-  const params = { ...INITIAL_ACTION_STATE };
+  const params = { ...INITIAL_STATE };
 
-  if (formData.get(VALUE_FROM)) {
-    params.amount = Number(formData.get(VALUE_FROM));
+  // NOTE: Would required more sophisticated validations in real-world use case
+  if (formData.get(FORM_NAME.CURRENCY_VALUE_FROM)) {
+    params.amount = Number(formData.get(FORM_NAME.CURRENCY_VALUE_FROM));
   }
 
-  if (formData.get(SYMBOL_FROM)) {
-    params.from = formData.get(SYMBOL_FROM)?.toString() ?? "";
+  if (formData.get(FORM_NAME.CURRENCY_SYMBOL_FROM)) {
+    params.from =
+      formData.get(FORM_NAME.CURRENCY_SYMBOL_FROM)?.toString() ?? "";
   }
 
-  if (formData.get(SYMBOL_TO)) {
-    params.to = formData.get(SYMBOL_TO)?.toString() ?? "";
+  if (formData.get(FORM_NAME.CURRENCY_SYMBOL_TO)) {
+    params.to = formData.get(FORM_NAME.CURRENCY_SYMBOL_TO)?.toString() ?? "";
   }
 
   try {
