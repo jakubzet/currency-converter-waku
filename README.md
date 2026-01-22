@@ -27,7 +27,7 @@ Simple currency converted made with React/Waku, just for fun ;)
 
 6. All the API communication sits in `lib` directory. It's used server-side in Waku index page, but also in React Server Action (`actions` directory).
 
-7. Not everything was possible to be done in relatively short time, but this could be a foundation for further investigation of the stack. For instance, I'm pretty sure the current implementation of debounce isn't ideal, as user needs to wait until request is made. However, I think it makes sense considering the API calls limitation we have, as it helps to send less of them when typing the value dynamically. Also, I'd like to add some tests, but wasn't able to - maybe in brief future ;)
+7. Not everything was possible to be done in relatively short time, but this could be a foundation for further investigation of the stack. For instance, I'm pretty sure the current implementation of debounce isn't ideal, as user needs to wait until request is made. However, I think it makes sense considering the API calls limitation we have, as it helps to send fewer requests when typing the value dynamically. Also, I'd like to add some tests, but wasn't able to - maybe in brief future ;)
 
 ## Copyrights
 

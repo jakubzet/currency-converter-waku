@@ -1,8 +1,9 @@
 "use client";
 
 import {
-  ChangeEvent,
+  ChangeEventHandler,
   type ComponentProps,
+  FocusEventHandler,
   useActionState,
   useRef,
 } from "react";
@@ -12,14 +13,13 @@ import {
   CURRENCY_CONVERT_ACTION_INITIAL_STATE,
   type CurrencyConvertAction,
 } from "../../actions/currencyConvertAction";
+import { RADIX_DECIMAL_PLACES } from "../../constants/currencyInput";
 import * as FORM_NAME from "../../constants/formNames";
 import { CurrencyField } from "../CurrencyField";
 import { CurrencySelect } from "../CurrencySelect";
 import { InfoBox } from "../InfoBox";
-import {
-  INPUT_UPDATE_DEBOUNCE_TIME_MS,
-  OUTPUT_VALUE_DECIMAL_PLACES,
-} from "./constants";
+import { INPUT_UPDATE_DEBOUNCE_TIME_MS } from "./constants";
+import { useCurrencyInputRadix } from "./hooks";
 import * as css from "./styles.module.css";
 
 type Props = {
@@ -31,17 +31,23 @@ type Props = {
 export const Converter = ({ currencies, formAction }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
 
+  const { saveCurrencyInputRadixInfo, decimalPlaces, suffix } =
+    useCurrencyInputRadix();
+
   const [state, action, isPending] = useActionState(
     formAction,
     CURRENCY_CONVERT_ACTION_INITIAL_STATE,
   );
 
-  const fieldValueFrom = state.amount ? state.amount : "";
-  const fieldValueTo = state.value
-    ? state.value.toFixed(OUTPUT_VALUE_DECIMAL_PLACES)
+  const labelOutput = "Output" + (isPending ? " (loading...)" : "");
+
+  const defaultValueInput = state.amount
+    ? state.amount.toFixed(decimalPlaces) + suffix
     : "";
 
-  const outputLabel = "Output" + (isPending ? " (loading...)" : "");
+  const defaultValueOutput = state.value
+    ? state.value.toFixed(RADIX_DECIMAL_PLACES)
+    : "";
 
   const handleFormSubmit = () => formRef.current?.requestSubmit();
 
@@ -57,13 +63,19 @@ export const Converter = ({ currencies, formAction }: Props) => {
     },
   );
 
-  const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (ev) => {
+    saveCurrencyInputRadixInfo(ev.currentTarget.value);
+
     const hasSameNumericValue =
-      Number(fieldValueFrom) === Number(ev.currentTarget.value);
+      Number(defaultValueInput) === Number(ev.currentTarget.value);
 
     if (!hasSameNumericValue) {
       handleFormSubmitDebounced();
     }
+  };
+
+  const handleInputBlur: FocusEventHandler<HTMLInputElement> = (ev) => {
+    saveCurrencyInputRadixInfo(ev.currentTarget.value);
   };
 
   return (
@@ -72,8 +84,9 @@ export const Converter = ({ currencies, formAction }: Props) => {
         <CurrencyField
           label="Input"
           name={FORM_NAME.CURRENCY_VALUE_FROM}
-          defaultValue={fieldValueFrom}
+          defaultValue={defaultValueInput}
           onChange={handleInputChange}
+          onBlur={handleInputBlur}
         >
           <CurrencySelect
             name={FORM_NAME.CURRENCY_SYMBOL_FROM}
@@ -83,7 +96,11 @@ export const Converter = ({ currencies, formAction }: Props) => {
           />
         </CurrencyField>
 
-        <CurrencyField label={outputLabel} readOnly defaultValue={fieldValueTo}>
+        <CurrencyField
+          label={labelOutput}
+          readOnly
+          defaultValue={defaultValueOutput}
+        >
           <CurrencySelect
             name={FORM_NAME.CURRENCY_SYMBOL_TO}
             currencies={currencies}
@@ -95,7 +112,7 @@ export const Converter = ({ currencies, formAction }: Props) => {
         <InfoBox
           message={
             state.error ||
-            "When input value is changed several times in short time, only the most recent value will be used (through debounce functionality)."
+            `Input update is delayed by ${INPUT_UPDATE_DEBOUNCE_TIME_MS}ms to limit the API calls (it's not free for eternity, you know... ;)). See more in README.md`
           }
           hasError={!!state.error}
         />
