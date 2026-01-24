@@ -1,4 +1,4 @@
-# Currency converted with Waku (currency-converter-waku)
+# Currency converter with Waku (currency-converter-waku)
 
 Simple currency converted made with React/Waku, just for fun ;)
 
